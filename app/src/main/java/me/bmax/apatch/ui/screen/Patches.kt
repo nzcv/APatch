@@ -619,5 +619,6 @@ private fun PatchMode(mode: PatchesViewModel.PatchMode) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar() {
-    TopAppBar(title = { Text(stringResource(R.string.patch_config_title)) })
+    //TopAppBar(title = { Text(stringResource(R.string.patch_config_title)) })
+    TopAppBar(title = { Text("Patches") })
 }

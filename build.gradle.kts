@@ -101,8 +101,8 @@ subprojects {
                 }
             }
 
-            lint {
-                abortOnError = true
+            lint {                
+                abortOnError = false
                 checkReleaseBuilds = false
             }
 

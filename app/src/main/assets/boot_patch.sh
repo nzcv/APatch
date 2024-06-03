@@ -31,6 +31,7 @@ echo "****************************"
 SUPERKEY=$1
 BOOTIMAGE=$2
 FLASH_TO_DEVICE=$3
+# Shift 命令还有另外一个重要用途, Bsh 定义了9个位置变量，从 $1 到 $9,这并不意味着用户在命令行只能使用9个参数，借助 shift 命令可以访问多于9个的参数。
 shift 2
 
 [ -z "$SUPERKEY" ] && { >&2 echo "- SuperKey empty!"; exit 1; }
@@ -42,6 +43,7 @@ command -v ./kptools >/dev/null 2>&1 || { >&2 echo "- Command kptools not found!
 
 if [ ! -f kernel ]; then
 echo "- Unpacking boot image"
+echo `pwd`
 ./magiskboot unpack "$BOOTIMAGE" >/dev/null 2>&1
   if [ $? -ne 0 ]; then
     >&2 echo "- Unpack error: $?"
@@ -53,9 +55,11 @@ mv kernel kernel.ori
 
 echo "- Patching kernel"
 
+# 启用 Bash 脚本的调试模式，使得在运行脚本时，每个执行的命令都会在标准错误输出中显示
 set -x
 ./kptools -p -i kernel.ori -S "$SUPERKEY" -k kpimg -o kernel "$@"
 patch_rc=$?
+# 关闭 Bash 脚本的调试模式，停止显示每个执行的命令，从而结束脚本的调试模式
 set +x
 
 if [ $patch_rc -ne 0 ]; then
